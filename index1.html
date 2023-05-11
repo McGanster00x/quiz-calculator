@@ -4,6 +4,14 @@
     font-family: 'Oswald';
   }
 
+.form__label1,
+.form__input1 {
+  display: block;
+  margin: 0;
+  margin-bottom: 20px;
+
+}
+
 .quiz {
   margin: 0 auto;
   width: 600px;
@@ -62,6 +70,10 @@
   <div class="quiz-indicator" id="indicator">1/10</div>
   <div class="quiz-controls">
     <button class="btn-next" id="btn-next" disabled>Далее</button>
+    <label id="form__label" for="formNumber" class="form__label" hidden>Спасибо за ответы!
+<p>Получите результат расчета, оставив контакты</p>
+      <p>Введите номер телефона, мы вышлем СМС с расчетами и зафиксируем вашу скидку и подарок</p></label>
+    <input id="formNumber" type="text" name="number" class="form__input" placeholder="Введите ваш номер" hidden>
     <button class="btn-submit" type="submit" id="btn-submit" value="Submit">Отправить и закрепить подарок</button>
 
       <h2>Ваша скидка: </h2><h2 class="score" id="userScore"> </h2>
@@ -113,6 +125,8 @@
   },
     ];
   
+  const formLabel = document.getElementById('form__label');
+  const formNumber = document.getElementById('formNumber')
   const questions = document.getElementById('questions');
   const indicator = document.getElementById('indicator');
   const results = document.getElementById('results');
@@ -204,6 +218,8 @@
       skidka = document.getElementById("userScore").innerHTML;
       document.getElementById("userScore").innerHTML = skidka + "%";
 
+        formNumber.classList.add('form__input1')
+        formLabel.classList.add('form__label1')
         indicator.classList.add('indicator--hidden');
         questions.classList.add('questions--hidden');
         results.classList.add('results--visible');
