@@ -1,0 +1,40 @@
+<form id="form1">
+  <p id="question"><h2>В каком стиле нужна кухня?</h2></p>
+  <input type="radio" class="answer" value="5" name="choice1" />Классика</label>
+  <input type="radio" class="answer" value="6" name="choice1" />Модерн</label>
+  <input type="radio" class="answer" value="7" name="choice1" />Минимализм</label>
+
+  <p id="question"><h2>В каких цветах должна быть кухня?</h2></p>
+  <input type="radio" class="answer" value="3" name="choice2" />Светлые</label>
+  <input type="radio" class="answer" value="3"  name="choice2" />Темные</label>
+  <input type="radio" class="answer" value="3"  name="choice2" />Цветная</label>
+
+  <p id="question"><h2>Какой материал вам нравится?</h2></p>
+  <input type="radio" class="answer" value="3"  name="choice3" />Пластик</label>
+  <input type="radio" class="answer" value="2" name="choice3" />Дерево (массив)</label>
+  <input type="radio" class="answer" value="1"  name="choice3" />МДФ (Пленка)</label>
+
+  <p id="question"><h2>Размер помещения кухни (примерно)</h2></p>
+  <input type="radio" class="answer" value="2"  name="choice4" />До 9 кв/м</label>
+  <input type="radio" class="answer" value="3"  name="choice4" />От 9 до 12 кв/м</label>
+  <input type="radio" class="answer" value="4"  name="choice4" />Больше 12 кв/м</label>
+
+  <p id="question"><h2>Какой подарок вы бы хотели получить при заказе кухни у нас?</h2></p>
+  <input type="radio" class="answer" value="0"  name="choice5" />Мойка из камня</label>
+  <input type="radio" class="answer" value="0"  name="choice5" />Светодиодная подсветка</label>
+  <input type="radio" class="answer-input" value="1"  name="choice5" />Варочная панель SMEG</label>
+
+  <p></p><button type="submit" value="Submit">Отправить и закрепить подарок</button>
+  <h2>Ваша скидка: </h2><h2 class="score" id="userScore"> </h2>
+  <script type="text/javascript">
+    window.addEventListener("load", function() { // when page loaded
+  document.getElementById("form1").addEventListener("submit", function(e) { // when submitted
+    e.preventDefault(); // cancel submit
+    result = 0;
+    [...document.querySelectorAll(".answer-input:checked")] // all checked radios
+     .forEach(rad => result += +rad.value); // add their numeric value
+    document.getElementById("userScore").innerHTML = result + "%";
+  })
+})
+    
+  </script>

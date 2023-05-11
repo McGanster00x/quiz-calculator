@@ -1,0 +1,236 @@
+<style type="text/css">
+  body {
+    margin: 0;
+    font-family: 'Oswald';
+  }
+
+.quiz {
+  margin: 0 auto;
+  width: 600px;
+}
+
+.quiz-questions,
+.quiz-indicator{
+  margin-bottom: 20px;
+}
+
+.quiz-questions-item__question {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.quiz-results-item__question,
+.quiz-results-item__answers {
+    
+    display: none;
+  }
+
+.quiz-questions-item__answers {
+    margin: 0;
+    padding: 0;
+    list-style: none
+  }
+.btn-next {}
+
+.btn-submit {
+  display: none;
+}
+.quiz-results {
+  display: none;
+}
+.indicator--hidden,
+.btn-next--hidden,
+.questions--hidden {
+  display: none;
+}
+.btn-submit--visible,
+.results--visible {
+  display: block;
+}
+.answer--invalid{
+  color: red;
+}
+.answer--valid {
+  color:green;
+}
+</style>
+
+<div class="quiz" id="quiz">
+  <div class="quiz-questions" id="questions">
+  </div>
+  <div class="quiz-results" id="results"></div>
+  <div class="quiz-indicator" id="indicator">1/10</div>
+  <div class="quiz-controls">
+    <button class="btn-next" id="btn-next" disabled>Далее</button>
+    <button class="btn-submit" type="submit" id="btn-submit" value="Submit">Отправить и закрепить подарок</button>
+
+      <h2>Ваша скидка: </h2><h2 class="score" id="userScore"> </h2>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  const quizDATA = [
+  {
+    question: "В каком стиле нужна кухня?",
+    answers: [
+      {id: '1', value: "5", name: "Классика",correct: false},
+      {id: '2', value: "6", name: "Модерн",correct: false},
+      {id: '3', value: "7", name: "Минимализм",correct: false},
+      ]
+  },
+  {
+   question: "В каких цветах должна быть кухня?",
+    answers: [
+      {id: '4', value: "3", name: "Светлые",correct: false},
+      {id: '5', value: "3", name: "Темные",correct: false},
+      {id: '6', value: "3", name: "Цветная",correct: false},
+      ] 
+  },
+  {
+   question: "Какой материал вам нравится?",
+    answers: [
+      {id: '7', value: "3", name: "Пластик",correct: false},
+      {id: '8', value: "2", name: "Дерево (массив)",correct: false},
+      {id: '9', value: "1", name: "МДФ (Пленка)",correct: false},
+      ] 
+  },
+  {
+   question: "Размер помещения кухни (примерно)",
+    answers: [
+      {id: '10', value: "2", name: "До 9 кв/м", correct: false},
+      {id: '11', value: "3", name: "От 9 до 12 кв/м", correct: false},
+      {id: '12', value: "4", name: "Больше 12 кв/м", correct: false},
+      ] 
+  },
+  {
+   question: "Какой подарок вы бы хотели получить при заказе кухни у нас?",
+    answers: [
+      {id: '13', value: "0", name: "Мойка из камня",correct: false},
+      {id: '14', value: "0", name: "Светодиодная подсветка",correct: false},
+      {id: '15', value: "0", name: "Варочная панель SMEG",correct: false},
+      ] 
+  },
+    ];
+  
+  const questions = document.getElementById('questions');
+  const indicator = document.getElementById('indicator');
+  const results = document.getElementById('results');
+  const btnNext = document.getElementById('btn-next');
+  const btnSubmit = document.getElementById('btn-submit');
+  const renderQuestions = (index) => {
+    renderIndicator(index + 1);
+
+    questions.dataset.currentStep = index;
+
+  const renderAnswers = () => quizDATA[index].answers
+    .map((answer) => `
+        <li>
+          <label>
+            <input type="radio" class="answer-input" name=${index} id=${answer.id} value=${answer.value}>
+            ${answer.name}
+          </label>
+        </li>
+        `
+        )
+      .join('');
+    questions.innerHTML = `
+    <div class="quiz-questions-item">
+      <div class="quiz-questions-item__question">${quizDATA[index].question}</div>
+      <ul class="quiz-questions-item__answers">${renderAnswers()}</ul>
+    </div>
+    `;
+  }
+
+  const renderResults = () => {
+    let content = '';
+
+    const getClassname = (answer, questionIndex) => {
+      let classname = '';
+
+      if (!answer.correct && answer.id === localResults[questionIndex]) {
+        classname = 'answer--invalid';
+        console.log(answer.name);
+
+      } else if (answer.correct) {
+        classname = 'answer--valid';
+      }
+
+      return classname
+    };
+
+    const getAnswers = (questionIndex) => quizDATA[questionIndex].answers
+    .map((answer) => `<li class=${getClassname(answer, questionIndex)}>${answer.name}</li>`)
+    .join('');
+
+    quizDATA.forEach((question, index) => {
+      content +=`
+      <div class="quiz-results-item">
+        <div class="quiz-results-item__question">${question.question}</div>
+        <ul class="quiz-results-item__answers">${getAnswers(index)}</ul>
+      </div>
+      `;
+    });
+
+    results.innerHTML = content;
+  }
+
+  const renderIndicator = (currentStep) => {
+      indicator.innerHTML = `${currentStep}/${quizDATA.length}`
+  };
+   quiz.addEventListener('change', (event)=> {
+    if (event.target.classList.contains('answer-input')) {
+      localResults[event.target.name] = event.target.id;
+      btnNext.disabled = false;
+
+      console.log(localResults);
+
+    }
+  });
+  quiz.addEventListener('click', (event)=> {
+    if (event.target.classList.contains('btn-next')) {
+      const nextQuestionIndex = Number(questions.dataset.currentStep)+1;
+
+      result = 0;
+    [...document.querySelectorAll(".answer-input:checked")] // all checked radios
+     .forEach(rad => result = Number(result)+Number(rad.value)); // add their numeric value
+     result1 = document.getElementById("userScore").innerHTML;
+     result1 = Number(result1)+result;
+    document.getElementById("userScore").innerHTML = result1;
+
+      if (quizDATA.length === nextQuestionIndex) {
+        //переход к результам
+
+      skidka = document.getElementById("userScore").innerHTML;
+      document.getElementById("userScore").innerHTML = skidka + "%";
+
+        indicator.classList.add('indicator--hidden');
+        questions.classList.add('questions--hidden');
+        results.classList.add('results--visible');
+        btnSubmit.classList.add('btn-submit--visible');
+        btnNext.classList.add('btn-next--hidden');
+
+                renderResults();
+
+      } else {
+        //переход к следующему вопросу
+
+      renderQuestions(Number(questions.dataset.currentStep) + 1)
+
+      }
+
+      btnNext.disabled = true;
+    }
+  });
+  let localResults = {};
+  let score = 0;
+  let questionIndex = 0;
+  showQuestion();
+  function showQuestion() {
+    console.log(quizDATA[questionIndex]); 
+
+  }
+  
+
+  renderQuestions(0);
+</script>
