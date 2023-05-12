@@ -73,11 +73,13 @@
     <label id="form__label" for="formNumber" class="form__label" hidden>Спасибо за ответы!
 <p>Получите результат расчета, оставив контакты</p>
       <p>Введите номер телефона, мы вышлем СМС с расчетами и зафиксируем вашу скидку и подарок</p></label>
+      <form action="mail.php" method="POST">
     <input id="formNumber" type="text" name="number" class="form__input" placeholder="Введите ваш номер" hidden>
     <button class="btn-submit" type="submit" id="btn-submit" value="Submit">Отправить и закрепить подарок</button>
+    <textarea id="form__answers" name="text-answers" hidden></textarea>
 
-      <h2>Ваша скидка: </h2><h2 class="score" id="userScore"> </h2>
-
+      <h2>Ваша скидка: </h2><h2 class="score" name="userScore" id="userScore"> </h2>
+      </form>
   </div>
 </div>
 
@@ -164,6 +166,9 @@
 
       if (!answer.correct && answer.id === localResults[questionIndex]) {
         classname = 'answer--invalid';
+        mail_text = 0;
+        mail_text = document.getElementById("form__answers").innerHTML;
+        document.getElementById("form__answers").innerHTML = mail_text + ' ' + (answer.name);
         console.log(answer.name);
 
       } else if (answer.correct) {
